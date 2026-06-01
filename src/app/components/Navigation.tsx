@@ -11,7 +11,7 @@ interface NavigationProps {
 
 export function Navigation({ currentPage, onNavigate, onStartLearning }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const edvoraLogo = 'https://drive.google.com/uc?export=view&id=1ykHrwJsU3nQeYlTv-9bar-SYX5-6wT_x';
+  const edvoraLogo = 'https://lh3.googleusercontent.com/d/1ykHrwJsU3nQeYlTv-9bar-SYX5-6wT_x';
 
   const menuItems: { label: string; page: Page }[] = [
     { label: 'Guest Entry', page: 'guest' },

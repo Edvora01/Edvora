@@ -8,8 +8,8 @@ interface HomePageProps {
 
 export function HomePage({ onStartLearning }: HomePageProps) {
   const [isFounderMessageExpanded, setIsFounderMessageExpanded] = useState(false);
-  const edvoraLogo = 'https://drive.google.com/uc?export=view&id=1ykHrwJsU3nQeYlTv-9bar-SYX5-6wT_x';
-  const founderPhoto = 'https://drive.google.com/uc?export=view&id=1-5zhWqlOQ_awlRrhR2O4x-ZPpFveFYv6';
+  const edvoraLogo = 'https://lh3.googleusercontent.com/d/1ykHrwJsU3nQeYlTv-9bar-SYX5-6wT_x';
+  const founderPhoto = 'https://lh3.googleusercontent.com/d/1-5zhWqlOQ_awlRrhR2O4x-ZPpFveFYv6';
   
   const features = [
     { icon: BookOpen, title: 'Select My Class', description: 'Choose from Class 6 to 12' },
