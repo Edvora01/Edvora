@@ -7,9 +7,12 @@ import { SubjectsPage } from './components/SubjectsPage';
 import { SubjectPartsPage } from './components/SubjectPartsPage';
 import { ChaptersPage } from './components/ChaptersPage';
 import { NotesPage } from './components/NotesPage';
+import { PYQsPage } from './components/PYQsPage';
+import { SamplePapersPage } from './components/SamplePapersPage';
+import { JeeNeetPage } from './components/JeeNeetPage';
 import { getSubjectParts } from './data/subjects';
 
-type Page = 'home' | 'guest' | 'classes' | 'subjects' | 'subject-parts' | 'chapters' | 'notes';
+export type Page = 'home' | 'guest' | 'classes' | 'subjects' | 'subject-parts' | 'chapters' | 'notes' | 'pyqs' | 'sample-papers' | 'jee-neet';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -18,7 +21,6 @@ export default function App() {
   const [selectedSubjectPart, setSelectedSubjectPart] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
 
-  // Scroll to top when page changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
@@ -36,7 +38,6 @@ export default function App() {
     setSelectedSubjectPart(null);
     setSelectedChapter(null);
 
-    // Check if this subject has parts for the selected class
     const parts = selectedClass ? getSubjectParts(subject, selectedClass) : null;
     if (parts) {
       setCurrentPage('subject-parts');
@@ -110,6 +111,15 @@ export default function App() {
         )}
         {currentPage === 'notes' && (
           <NotesPage />
+        )}
+        {currentPage === 'pyqs' && (
+          <PYQsPage />
+        )}
+        {currentPage === 'sample-papers' && (
+          <SamplePapersPage />
+        )}
+        {currentPage === 'jee-neet' && (
+          <JeeNeetPage />
         )}
       </main>
     </div>
