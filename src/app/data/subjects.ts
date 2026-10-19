@@ -11,10 +11,12 @@ export const subjectsData: Record<number, string[]> = {
 export const subjectParts: Record<string, Record<number, string[]>> = {
   'Social Science': {
     7: ['Part 1', 'Part 2'],
+    9: ['Part 1', 'Part 2'],
     10: ['History', 'Geography', 'Civics', 'Economics'],
   },
   'Mathematics': {
     8: ['Part 1', 'Part 2'],
+    9: ['Part 1', 'Part 2'],
     12: ['Part 1', 'Part 2'],
   },
   'English': {
