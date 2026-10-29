@@ -10,9 +10,23 @@ import { NotesPage } from './components/NotesPage';
 import { PYQsPage } from './components/PYQsPage';
 import { SamplePapersPage } from './components/SamplePapersPage';
 import { JeeNeetPage } from './components/JeeNeetPage';
+import { SkillsPage } from './components/SkillsPage';
+import { BooksByMePage } from './components/BooksByMePage';
 import { getSubjectParts } from './data/subjects';
 
-export type Page = 'home' | 'guest' | 'classes' | 'subjects' | 'subject-parts' | 'chapters' | 'notes' | 'pyqs' | 'sample-papers' | 'jee-neet';
+export type Page =
+  | 'home'
+  | 'guest'
+  | 'classes'
+  | 'subjects'
+  | 'subject-parts'
+  | 'chapters'
+  | 'notes'
+  | 'pyqs'
+  | 'sample-papers'
+  | 'jee-neet'
+  | 'skills'
+  | 'books';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -38,7 +52,10 @@ export default function App() {
     setSelectedSubjectPart(null);
     setSelectedChapter(null);
 
-    const parts = selectedClass ? getSubjectParts(subject, selectedClass) : null;
+    const parts = selectedClass
+      ? getSubjectParts(subject, selectedClass)
+      : null;
+
     if (parts) {
       setCurrentPage('subject-parts');
     } else {
@@ -59,7 +76,10 @@ export default function App() {
     setCurrentPage(page);
   };
 
-  const subjectParts = selectedClass && selectedSubject ? getSubjectParts(selectedSubject, selectedClass) : null;
+  const subjectParts =
+    selectedClass && selectedSubject
+      ? getSubjectParts(selectedSubject, selectedClass)
+      : null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -73,12 +93,15 @@ export default function App() {
         {currentPage === 'home' && (
           <HomePage onStartLearning={handleStartLearning} />
         )}
+
         {currentPage === 'guest' && (
           <GuestEntry onStartLearning={handleStartLearning} />
         )}
+
         {currentPage === 'classes' && (
           <ClassesPage onClassSelect={handleClassSelect} />
         )}
+
         {currentPage === 'subjects' && selectedClass && (
           <SubjectsPage
             selectedClass={selectedClass}
@@ -86,41 +109,54 @@ export default function App() {
             onBack={() => setCurrentPage('classes')}
           />
         )}
-        {currentPage === 'subject-parts' && selectedClass && selectedSubject && subjectParts && (
-          <SubjectPartsPage
-            selectedClass={selectedClass}
-            selectedSubject={selectedSubject}
-            parts={subjectParts}
-            onPartSelect={handleSubjectPartSelect}
-            onBack={() => setCurrentPage('subjects')}
-          />
-        )}
-        {currentPage === 'chapters' && selectedClass && selectedSubject && (
-          <ChaptersPage
-            selectedClass={selectedClass}
-            selectedSubject={selectedSubject}
-            selectedSubjectPart={selectedSubjectPart}
-            onBack={() => {
-              if (subjectParts) {
-                setCurrentPage('subject-parts');
-              } else {
-                setCurrentPage('subjects');
-              }
+
+        {currentPage === 'subject-parts' &&
+          selectedClass &&
+          selectedSubject &&
+          subjectParts && (
+            <SubjectPartsPage
+              selectedClass={selectedClass}
+              selectedSubject={selectedSubject}
+              parts={subjectParts}
+              onPartSelect={handleSubjectPartSelect}
+              onBack={() => setCurrentPage('subjects')}
+            />
+          )}
+
+        {currentPage === 'chapters' &&
+          selectedClass &&
+          selectedSubject && (
+            <ChaptersPage
+              selectedClass={selectedClass}
+              selectedSubject={selectedSubject}
+              selectedSubjectPart={selectedSubjectPart}
+              onBack={() => {
+                if (subjectParts) {
+                  setCurrentPage('subject-parts');
+                } else {
+                  setCurrentPage('subjects');
+                }
+              }}
+            />
+          )}
+
+        {currentPage === 'notes' && <NotesPage />}
+
+        {currentPage === 'pyqs' && <PYQsPage />}
+
+        {currentPage === 'sample-papers' && <SamplePapersPage />}
+
+        {currentPage === 'jee-neet' && <JeeNeetPage />}
+
+        {currentPage === 'skills' && (
+          <SkillsPage
+            onSkillSelect={(skillId) => {
+              console.log('Selected skill:', skillId);
             }}
           />
         )}
-        {currentPage === 'notes' && (
-          <NotesPage />
-        )}
-        {currentPage === 'pyqs' && (
-          <PYQsPage />
-        )}
-        {currentPage === 'sample-papers' && (
-          <SamplePapersPage />
-        )}
-        {currentPage === 'jee-neet' && (
-          <JeeNeetPage />
-        )}
+
+        {currentPage === 'books' && <BooksByMePage />}
       </main>
     </div>
   );
