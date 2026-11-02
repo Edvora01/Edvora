@@ -15,6 +15,8 @@ import { SkillsPage } from './components/SkillsPage';
 import { BooksByMePage } from './components/BooksByMePage';
 import { CoursePage } from './components/CoursePage';
 import { LessonPage } from './components/LessonPage';
+import { InfinitySlatePage } from './components/InfinitySlatePage';
+import { Footer } from './components/Footer';
 
 import { getSubjectParts } from './data/subjects';
 import { courses } from './data/courseContent';
@@ -39,7 +41,8 @@ export type Page =
   | 'skills'
   | 'books'
   | 'course'
-  | 'lesson';
+  | 'lesson'
+  | 'infinity-slate';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -138,7 +141,7 @@ export default function App() {
 
       <main>
         {currentPage === 'home' && (
-          <HomePage onStartLearning={handleStartLearning} />
+          <HomePage onStartLearning={handleStartLearning} onNavigate={handleNavigate} />
         )}
 
         {currentPage === 'guest' && (
@@ -201,6 +204,8 @@ export default function App() {
 
         {currentPage === 'books' && <BooksByMePage />}
 
+        {currentPage === 'infinity-slate' && <InfinitySlatePage />}
+
         {currentPage === 'course' && selectedCourse && (
           <CoursePage
             course={selectedCourse}
@@ -221,6 +226,7 @@ export default function App() {
             />
           )}
       </main>
+      <Footer onNavigate={handleNavigate} />
     </div>
   );
 }

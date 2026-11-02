@@ -7,99 +7,32 @@ export type Lesson = {
   presentationUrl: string;
 };
 
-export type Module = {
-  id: string;
-  title: string;
-  description: string;
-  chapters: Lesson[];
+export type Module = { id: string; title: string; description: string; chapters: Lesson[] };
+export type Course = { id: string; title: string; tagline: string; description: string; level: string; totalModules: number; totalChapters: number; modules: Module[] };
+
+const courseSeeds = [
+  ["data-science","Data Science","Understand Data. Discover Patterns. Build Solutions.","Learn to organise, analyse and communicate data through practical investigations.","What Is Data?"],
+  ["python","Python Programming","Think Clearly. Code Confidently.","Build programming foundations with variables, decisions, loops and small useful programs.","Your First Python Program"],
+  ["web-development","Web Development","Design It. Build It. Share It.","Learn the structure, style and behaviour behind accessible modern websites.","How a Web Page Works"],
+  ["graphic-design","Graphic Design","See Better. Communicate Visually.","Practise hierarchy, typography, colour and layout through focused design briefs.","Visual Hierarchy"],
+  ["video-editing","Video Editing","Shape Footage into a Story.","Learn sequencing, pacing, sound and responsible visual storytelling.","The Building Blocks of an Edit"],
+  ["communication","Professional Communication Skills","Communicate Clearly. Listen Actively. Present Confidently.","Develop useful speaking, listening, writing and presentation habits.","What Is Communication?"],
+] as const;
+
+const existingPresentations: Record<string, string> = {
+  "data-science": "https://drive.google.com/file/d/1Jj_E_bQxbV_YiI0k_ZMygvca-9eUb35G/view?usp=sharing",
+  communication: "https://drive.google.com/file/d/1e2h82uVOUzG5zzWtWsXGp_MegI0tvoTf/view?usp=sharing",
 };
 
-export type Course = {
-  id: string;
-  title: string;
-  tagline: string;
-  description: string;
-  level: string;
-  totalModules: number;
-  totalChapters: number;
-  modules: Module[];
-};
-
-export const courses: Course[] = [
-  {
-    id: "communication",
-    title: "Professional Communication Skills",
-    tagline:
-      "Communicate Clearly. Listen Actively. Present Confidently.",
-    description:
-      "Develop practical communication skills for conversations, presentations, teamwork and professional environments.",
-    level: "Beginner to Advanced",
-    totalModules: 12,
-    totalChapters: 60,
-    modules: [
-      {
-        id: "communication-module-1",
-        title: "Module 1 — Foundations of Communication",
-        description:
-          "Understand communication, how messages travel between people, and why communication sometimes fails.",
-        chapters: [
-          {
-            id: "communication-1-1",
-            title: "1.1 — What Is Communication?",
-            duration: "15 min",
-            status: "ready",
-            videoUrl: "",
-            presentationUrl:
-              "https://drive.google.com/file/d/1e2h82uVOUzG5zzWtWsXGp_MegI0tvoTf/view?usp=sharing",
-          },
-          {
-            id: "communication-1-2",
-            title: "1.2 — Why Communication Matters",
-            duration: "20 min",
-            status: "coming-soon",
-            videoUrl: "",
-            presentationUrl: "",
-          },
-        ],
-      },
+export const courses: Course[] = courseSeeds.map(([id,title,tagline,description,lesson]) => ({
+  id, title, tagline, description, level: "Beginner", totalModules: 1, totalChapters: 2,
+  modules: [{
+    id: `${id}-module-1`,
+    title: "Module 1 — Foundations",
+    description: `Build a clear foundation in ${title.toLowerCase()} through explanation and practical work.`,
+    chapters: [
+      { id: `${id}-1-1`, title: `1.1 — ${lesson}`, duration: "20 min", status: "ready", videoUrl: "", presentationUrl: existingPresentations[id] || "" },
+      { id: `${id}-1-2`, title: "1.2 — Guided Practice", duration: "25 min", status: "coming-soon", videoUrl: "", presentationUrl: "" },
     ],
-  },
-
-  {
-    id: "data-science",
-    title: "Data Science",
-   tagline: 'Understand Data. Discover Patterns. Build Solutions.',
-description:
-  'Learn how to understand, organise, analyse and interpret data through practical examples and projects.',
-    level: "Complete Beginner",
-    totalModules: 14,
-    totalChapters: 66,
-    modules: [
-      {
-        id: "data-science-module-1",
-        title: "Module 1 — Introduction to Data Science",
-        description:
-          "Understand the basics of data and how data-driven work creates useful information.",
-        chapters: [
-          {
-            id: "data-science-1-1",
-            title: "1.1 — What Is Data?",
-            duration: "15 min",
-            status: "ready",
-            videoUrl: "",
-            presentationUrl:
-              "https://drive.google.com/file/d/1Jj_E_bQxbV_YiI0k_ZMygvca-9eUb35G/view?usp=sharing",
-          },
-          {
-            id: "data-science-1-2",
-            title: "1.2 — From Data to Information",
-            duration: "20 min",
-            status: "coming-soon",
-            videoUrl: "",
-            presentationUrl: "",
-          },
-        ],
-      },
-    ],
-  },
-];
+  }],
+}));

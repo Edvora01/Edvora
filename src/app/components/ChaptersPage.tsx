@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, FileText, Download, BookOpen, Eye, Play, X, Atom, FlaskConical, GraduationCap, ChevronRight } from 'lucide-react';
+import { ArrowLeft, FileText, Download, BookOpen, Eye, Play, X, Atom, FlaskConical, GraduationCap, ChevronRight, Search, ExternalLink } from 'lucide-react';
 import { getChapters, Chapter } from '../data/chapters';
 import { VideoLibrary } from './VideoLibrary';
 
@@ -35,6 +35,12 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
   const [notesTab, setNotesTab] = useState<NotesTab>('chapter');
   const [jeeClass, setJeeClass] = useState<number>(11);
   const [neetClass, setNeetClass] = useState<number>(11);
+  const [query, setQuery] = useState('');
+  const filteredChapters = chapters.filter((chapter) => chapter.title.toLowerCase().includes(query.toLowerCase()));
+
+  if (!selectedChapter) {
+    return <div className="min-h-screen bg-slate-50 pt-32 text-center"><BookOpen className="mx-auto h-12 w-12 text-slate-300" /><h1 className="mt-4 text-2xl font-bold">No chapters are connected yet</h1><button onClick={onBack} className="mt-5 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white">Back to subjects</button></div>;
+  }
 
   const handleDownload = (chapter: Chapter) => {
     const fileIdMatch = chapter.pdfUrl.match(/\/d\/([^\/]+)/);
@@ -51,7 +57,7 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
   const neetSubjectTopics = neetTopics[selectedSubject] || neetTopics['Biology'];
 
   return (
-    <div className="pt-16 min-h-screen bg-gray-50">
+    <div className="pt-[72px] min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
         <button
           onClick={onBack}
@@ -90,26 +96,32 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
               </span>
             )}
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-gray-900">Chapters & Resources</h1>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-slate-950 tracking-tight">Chapter learning workspace</h1>
+          <p className="mt-3 text-slate-600">Choose a chapter, then move between the verified PDF and available learning resources without leaving your workspace.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Chapter List */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4">
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden lg:sticky lg:top-24">
+              <div className="bg-slate-950 text-white p-4">
                 <h2 className="font-semibold flex items-center gap-2">
                   <BookOpen className="w-5 h-5" />
                   Chapters
                 </h2>
               </div>
-              <div className="divide-y divide-gray-100 max-h-[500px] md:max-h-none overflow-y-auto">
-                {chapters.map((chapter, index) => (
+              <div className="border-b border-slate-100 p-3">
+                <div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search chapters…" className="w-full rounded-xl bg-slate-50 py-2.5 pl-9 pr-3 text-sm outline-none ring-blue-500 focus:ring-2" /></div>
+              </div>
+              <div className="divide-y divide-gray-100 max-h-[62vh] overflow-y-auto">
+                {filteredChapters.map((chapter) => {
+                  const index = chapters.findIndex((item) => item.id === chapter.id);
+                  return (
                   <button
                     key={chapter.id}
                     onClick={() => {
                       setSelectedChapter(chapter);
-                      setViewMode('none');
+                      setViewMode('pdf');
                     }}
                     className={`w-full text-left p-4 hover:bg-blue-50 transition-colors ${
                       selectedChapter.id === chapter.id ? 'bg-blue-50 border-l-4 border-blue-600' : ''
@@ -126,15 +138,16 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
                       </div>
                     </div>
                   </button>
-                ))}
+                )})}
+                {filteredChapters.length === 0 && <p className="p-8 text-center text-sm text-slate-500">No chapter matches “{query}”.</p>}
               </div>
             </div>
           </div>
 
           {/* Right: Chapter Details & Resources */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 md:p-6">
+            <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-700 to-violet-700 text-white p-5 md:p-7">
                 <h2 className="text-xl md:text-2xl font-bold mb-2">{selectedChapter.title}</h2>
                 <p className="text-purple-100 text-sm">
                   Access study materials, videos, and notes for this chapter
@@ -153,6 +166,14 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
                     <Eye className="w-4 h-4 md:w-5 md:h-5" />
                     View PDF
                   </button>
+                  <a
+                    href={selectedChapter.pdfUrl.replace('/preview', '/view')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 md:px-6 md:py-3"
+                  >
+                    <ExternalLink className="h-4 w-4" /> Open in Drive
+                  </a>
                   <button
                     onClick={() => handleDownload(selectedChapter)}
                     className="flex items-center gap-2 bg-green-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl hover:bg-green-600 transition-all shadow-md hover:shadow-lg font-medium text-sm md:text-base"
@@ -209,7 +230,7 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
                         <X className="w-5 h-5" />
                       </button>
                     </div>
-                    <div className="bg-gray-100 rounded-xl overflow-hidden" style={{ height: '600px' }}>
+                    <div className="bg-gray-100 rounded-xl overflow-hidden h-[65vh] min-h-[520px]">
                       <iframe
                         src={selectedChapter.pdfUrl}
                         className="w-full h-full"
@@ -373,33 +394,20 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
                           </p>
                           <div className="grid grid-cols-2 gap-2">
                             {jeeSubjectTopics.slice(0, 8).map((topic) => (
-                              <button
+                              <div
                                 key={topic}
                                 className="flex items-center justify-between bg-white border border-indigo-100 rounded-xl px-3 py-2.5 text-left hover:border-indigo-300 hover:shadow-sm transition-all group"
                               >
                                 <span className="text-sm font-medium text-gray-800 truncate pr-1">{topic}</span>
                                 <ChevronRight className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" />
-                              </button>
+                              </div>
                             ))}
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-3">
-                          {[
-                            { label: 'Practice Problems', count: '120+', color: 'bg-indigo-100 text-indigo-700' },
-                            { label: 'Solved Examples', count: '45', color: 'bg-blue-100 text-blue-700' },
-                            { label: 'Mock Tests', count: '12', color: 'bg-purple-100 text-purple-700' },
-                          ].map((item) => (
-                            <div key={item.label} className={`${item.color} rounded-xl p-3 text-center`}>
-                              <p className="text-lg font-bold">{item.count}</p>
-                              <p className="text-xs font-medium">{item.label}</p>
-                            </div>
-                          ))}
-                        </div>
-
-                        <button className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
+                        <button disabled title="Practice data is not connected" className="w-full cursor-not-allowed bg-indigo-200 text-indigo-700 py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
                           <GraduationCap className="w-5 h-5" />
-                          Start JEE Practice — Class {jeeClass}
+                          JEE practice integration required — Class {jeeClass}
                         </button>
                       </div>
                     )}
@@ -443,33 +451,20 @@ export function ChaptersPage({ selectedClass, selectedSubject, selectedSubjectPa
                           </p>
                           <div className="grid grid-cols-2 gap-2">
                             {neetSubjectTopics.slice(0, 8).map((topic) => (
-                              <button
+                              <div
                                 key={topic}
                                 className="flex items-center justify-between bg-white border border-green-100 rounded-xl px-3 py-2.5 text-left hover:border-green-300 hover:shadow-sm transition-all group"
                               >
                                 <span className="text-sm font-medium text-gray-800 truncate pr-1">{topic}</span>
                                 <ChevronRight className="w-3.5 h-3.5 text-green-400 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" />
-                              </button>
+                              </div>
                             ))}
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-3">
-                          {[
-                            { label: 'Practice MCQs', count: '200+', color: 'bg-green-100 text-green-700' },
-                            { label: 'NCERT Based', count: '80+', color: 'bg-teal-100 text-teal-700' },
-                            { label: 'Mock Tests', count: '10', color: 'bg-emerald-100 text-emerald-700' },
-                          ].map((item) => (
-                            <div key={item.label} className={`${item.color} rounded-xl p-3 text-center`}>
-                              <p className="text-lg font-bold">{item.count}</p>
-                              <p className="text-xs font-medium">{item.label}</p>
-                            </div>
-                          ))}
-                        </div>
-
-                        <button className="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                        <button disabled title="Practice data is not connected" className="w-full cursor-not-allowed bg-green-200 text-green-700 py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
                           <GraduationCap className="w-5 h-5" />
-                          Start NEET Practice — Class {neetClass}
+                          NEET practice integration required — Class {neetClass}
                         </button>
                       </div>
                     )}

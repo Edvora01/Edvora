@@ -120,11 +120,11 @@ export function JeeNeetPage() {
                 <GraduationCap className="w-4 h-4" />
                 Competitive Exam Preparation
               </div>
-              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight">
-                JEE / NEET
+              <h1 className="text-4xl md:text-7xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                Prepare Beyond Limits.
               </h1>
               <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">
-                Chapter-wise notes, video lectures, and practice papers designed specifically for engineering and medical entrance exams
+                Your competitive exam preparation, organised in one place.
               </p>
             </div>
 
@@ -150,14 +150,7 @@ export function JeeNeetPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    {[{ v: '200+', l: 'Chapters' }, { v: '500+', l: 'Problems' }].map(({ v, l }) => (
-                      <div key={l} className="bg-indigo-50 rounded-xl px-3 py-2 text-center">
-                        <p className="text-base font-bold text-indigo-700">{v}</p>
-                        <p className="text-xs text-gray-500">{l}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-xs font-semibold text-indigo-600">Class 11–12 · Chapter-wise workspace</p>
                   <div className="mt-5 flex items-center gap-2 text-indigo-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
                     Start Preparation <ChevronRight className="w-4 h-4" />
                   </div>
@@ -185,14 +178,7 @@ export function JeeNeetPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    {[{ v: '250+', l: 'Chapters' }, { v: '600+', l: 'MCQs' }].map(({ v, l }) => (
-                      <div key={l} className="bg-emerald-50 rounded-xl px-3 py-2 text-center">
-                        <p className="text-base font-bold text-emerald-700">{v}</p>
-                        <p className="text-xs text-gray-500">{l}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-xs font-semibold text-emerald-600">Class 11–12 · Chapter-wise workspace</p>
                   <div className="mt-5 flex items-center gap-2 text-emerald-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
                     Start Preparation <ChevronRight className="w-4 h-4" />
                   </div>
@@ -461,7 +447,6 @@ export function JeeNeetPage() {
                             {selectedChapter.lectureCount} video lectures for <span className="font-semibold text-gray-700">{selectedChapter.title}</span>
                           </p>
                           {Array.from({ length: selectedChapter.lectureCount }, (_, i) => {
-                            const durationMins = 20 + Math.floor(Math.random() * 30);
                             const lectureLabels = [
                               'Introduction & Overview', 'Core Concepts Explained', 'Worked Examples',
                               'Advanced Problems', 'Previous Year Questions', 'Tricks & Shortcuts',
@@ -470,7 +455,7 @@ export function JeeNeetPage() {
                             return (
                               <div
                                 key={i}
-                                className="flex items-center gap-4 bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 cursor-pointer group transition-colors border border-gray-100"
+                                className="flex items-center gap-4 bg-gray-50 rounded-2xl p-4 group border border-gray-100"
                               >
                                 <div className={`w-12 h-12 bg-gradient-to-br ${subCfg.gradient} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-md`}>
                                   <Play className="w-5 h-5 text-white" />
@@ -479,11 +464,11 @@ export function JeeNeetPage() {
                                   <p className="font-semibold text-gray-900 text-sm truncate">
                                     Lecture {i + 1}: {lectureLabels[i % lectureLabels.length]}
                                   </p>
-                                  <p className="text-xs text-gray-400">{selectedChapter.title}</p>
+                                  <p className="text-xs text-gray-400">{selectedChapter.title} · Video URL not yet connected</p>
                                 </div>
                                 <div className="flex items-center gap-1 text-xs text-gray-400 flex-shrink-0">
                                   <Clock className="w-3.5 h-3.5" />
-                                  {durationMins} min
+                                  Not connected
                                 </div>
                               </div>
                             );
@@ -516,10 +501,10 @@ export function JeeNeetPage() {
                                   <BarChart3 className="w-5 h-5 text-gray-300" />
                                 </div>
                                 <div className="flex gap-2">
-                                  <button className={`flex-1 flex items-center justify-center gap-2 ${subCfg.light} ${subCfg.text} py-2 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity`}>
+                                  <button disabled title="Attempt integration is not connected" className={`flex-1 flex items-center justify-center gap-2 ${subCfg.light} ${subCfg.text} py-2 rounded-xl text-xs font-semibold opacity-60 cursor-not-allowed`}>
                                     <Play className="w-3.5 h-3.5" /> Attempt
                                   </button>
-                                  <button className={`flex-1 flex items-center justify-center gap-2 bg-gradient-to-r ${subCfg.gradient} text-white py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition-opacity shadow-sm`}>
+                                  <button disabled title="No paper file is connected" className={`flex-1 flex items-center justify-center gap-2 bg-gradient-to-r ${subCfg.gradient} text-white py-2 rounded-xl text-xs font-semibold opacity-60 cursor-not-allowed shadow-sm`}>
                                     <Download className="w-3.5 h-3.5" /> Download
                                   </button>
                                 </div>
